@@ -37,7 +37,7 @@ export const authoptions = {
     pages : {
         signIn : "/",
     },
-
+    secret : process.env.NEXTAUTH_SECRET,
     callbacks : {
         async signIn({
             user,
@@ -52,14 +52,18 @@ export const authoptions = {
                     name : user.name,
                     oauth_id : account?.providerAccountId,
                     provider:account?.provider,
-                    image : user.image,
+                    image: user?.image,
                 };
                 const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, payload);
                 const data = response.data;
-               
-                user.id = data.user.id.toString();
-                user.token = data.user.token;
-                return true;
+                if(data.success){
+                    user.id = data.user.id;
+                    user.token = data.user.token;
+                    user.name = data.user.name;
+                    user.provider = data.user.provider;
+                    return true;
+                }
+                return false;
 
 
             }
