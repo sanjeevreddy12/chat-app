@@ -22,8 +22,6 @@ model User{
   oauth_id String @unique
   created_at DateTime @default(now())
   @@map("users")
-  
-  
 
 
 }
