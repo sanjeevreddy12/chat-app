@@ -21,15 +21,22 @@ export function Signin(){
                         Chat-app makes life easy by creating links and makes conversations in seconds
                     </DialogDescription>
                 </DialogHeader>
-                <Button variant={"outline"} onClick={ async ()=>{
-                   await  signIn("google" ,{
-                        redirect : true,
-                        callbackUrl : "/",
+                <Button variant={"outline"} onClick={ () => {
+                    try {
+                        signIn("google", {
+                            redirect: true,
+                            callbackUrl: "/",
+                        });
+                    } catch (error) {
+
+                        console.log("cjsdclcwcwkcwkccccckmcklcmlkc");
+                        console.log(error);
+                        console.error("Sign in error:", error);
                     }
-                    )
                 }}>
-                   Continue with google
-                     </Button>
+
+                    Continue with google
+                </Button>
             </DialogContent>
         </Dialog>
     )

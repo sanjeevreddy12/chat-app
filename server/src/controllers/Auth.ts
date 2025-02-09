@@ -1,53 +1,47 @@
-import {Request,Response} from "express";
+import {Request, Response} from "express";
 import prisma from "../config/db.config";
 import jwt from "jsonwebtoken";
-interface signinBody{
-    email : string;
-    name : string;
-    provider : string;
-    oauth_id : string;
-    image?:string;
 
+interface signinBody {
+    email: string;
+    name: string;
+    provider: string;
+    oauth_id: string;
+    image?: string;
 }
 
-
-const signin = async(req : Request , res : Response)=>{
+export const signin = async(req: Request, res: Response): Promise<void> => {
     try {
-        const body:signinBody = req.body;
+        const body: signinBody = req.body;
         const user = await prisma.user.findUnique({
-            where:{
-                email : body.email
-
+            where: {
+                email: body.email
             }
-        })
-        if(!user){
+        });
+        
+        if(!user) {
             await prisma.user.create({
-                data : body
-
-                
-
-            })
-            
+                data: body
+            });
         }
-        const jwtpayload ={
-            name : body.name,
-            email : body.email,
-            id : user?.id,
-
-        }
-        const token = jwt.sign(jwtpayload , process.env.JWTSECRET as string);
-        return res.json({
-            message : "User Loggedin Successfully",
-            user : {
+        
+        const jwtpayload = {
+            name: body.name,
+            email: body.email,
+            id: user?.id,
+        };
+        
+        const token = jwt.sign(jwtpayload, process.env.JWTSECRET as string);
+        res.status(200).json({
+            message: "User Loggedin Successfully",
+            user: {
                 ...user,
-                token : `Bearer ${token}`
+                token: `Bearer ${token}`
             }
-        })
+        });
+    } catch(e) {
+        res.status(500).json({
+            message: "Internal Server Error"
+        });
     }
-    catch(e){
-        return res.json({
-            message : "Internal Server Error"
-        })
-    }
-
 }
