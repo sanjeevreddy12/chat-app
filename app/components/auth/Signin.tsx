@@ -4,10 +4,10 @@ import { Button } from "../ui/button";
 import { DialogDescription, DialogHeader, DialogTitle } from "../ui/dialog";
 import { signIn } from "next-auth/react";
 
-export function Signin(){
+export   default function Signin(){
     return(
         <Dialog>
-            <DialogTrigger>
+            <DialogTrigger asChild>
                 <Button>
                     lets Start
                 </Button>
@@ -21,12 +21,15 @@ export function Signin(){
                         Chat-app makes life easy by creating links and makes conversations in seconds
                     </DialogDescription>
                 </DialogHeader>
-                <Button variant={"outline"} onClick={ () => {
+                <Button variant={"outline"} onClick={async  () => {
                     try {
-                        signIn("google", {
+                        console.log("signing in");
+                        await signIn("google", {
                             redirect: true,
-                            callbackUrl: "/",
+                            callbackUrl: "/dashboard",
                         });
+
+
                     } catch (error) {
 
                         console.log("cjsdclcwcwkcwkccccckmcklcmlkc");

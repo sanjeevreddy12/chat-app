@@ -12,16 +12,45 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model User {
+  id          String    @id @default(uuid())
+  name        String    @db.VarChar(255)
+  email       String    @db.VarChar(255) @unique
+  provider    String    @db.VarChar(255)
+  image       String?
+  oauth_id    String    @unique
+  created_at  DateTime  @default(now())
 
-model User{
-  id String @id @default(uuid())
-  name String @db.VarChar(255)
-  email String @db.VarChar(255) @unique
-  provider String @db.VarChar(255)
-  image String?
-  oauth_id String @unique
-  created_at DateTime @default(now())
+  chatGroups      ChatGroups[]
+  groupMemberships GroupMemberships[]
+
   @@map("users")
+}
 
+model ChatGroups {
+  id          String    @id @default(uuid()) @db.Uuid
+  user_id     String
+  title       String    @db.VarChar(225)
+  password    String    @db.VarChar(30)
+  created_at  DateTime  @default(now())
 
+  user            User             @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  groupMemberships GroupMemberships[]
+
+  @@index([created_at])
+  @@map("chats")
+}
+
+model GroupMemberships {
+  id         Int       @id @default(autoincrement())
+  chat_id    String    @db.Uuid
+  user_id    String
+  name       String
+  created_at DateTime  @default(now())
+
+  chat ChatGroups  @relation(fields: [chat_id], references: [id], onDelete: Cascade)
+  user User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, chat_id])
+  @@map("group_users")
 }

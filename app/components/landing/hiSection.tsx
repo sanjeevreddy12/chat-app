@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Button } from "../ui/button"
 import { authoptions } from "@/lib/actions/auth";
 import { getServerSession } from "next-auth";
+import  Signin  from "../auth/Signin";
 
 export const HiSection=(async ()=>{
     const session = await getServerSession(authoptions);
@@ -14,7 +15,7 @@ export const HiSection=(async ()=>{
             <p className="text-xl text-gray-600 mb-8">
                 Chat-app helps people to create secure chatlinks and start conversations in seconds 
             </p>
-            <Link href={user ? "/dashboard" : "/signin"}> 
+            <Link href={user ? "/dashboard" : "api/auth/signin"}> 
             {user ? (
                 <Button size={"lg"} className="animate-pulse">Continue Your Conversation </Button>
             ) : (

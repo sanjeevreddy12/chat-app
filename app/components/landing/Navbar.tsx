@@ -1,9 +1,14 @@
-import { User } from "@/lib/actions/auth"
-import Link from "next/link"
-import { Signin } from "../auth/Signin"
-import { Button } from "../ui/button"
 
-export const Navbar = (user:User | null)=>{
+import Link from "next/link"
+import Signin  from "../auth/Signin"
+import { Button } from "../ui/button"
+import { CustomUser } from "@/lib/actions/auth"
+
+interface NavbarProps {
+  user: CustomUser | null;
+}
+
+export const Navbar = ({ user }: NavbarProps) => {
     return(
         <div className=" p-6 flex justify-between bg-white ">
             <h1 className="text-xl md:text-2xl font-extrabold">
@@ -13,7 +18,7 @@ export const Navbar = (user:User | null)=>{
                 <Link href={"/"}>Home</Link>
                 <Link href={"#features"} >Features</Link>
                 {
-                    user ? (
+                    !user ? (
                         <Signin/>
 
                     ):

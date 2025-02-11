@@ -1,16 +1,21 @@
+"use client"
 import { Dispatch, SetStateAction } from "react";
 import { AlertDialog,AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../ui/alert-dialog";
 import { signOut } from "next-auth/react";
 
-export function Signout({
+export default function Signout({
     open,setopen 
 }:{
     open : boolean , setopen : Dispatch<SetStateAction<boolean>>
 ;}){
 
     return(
-        <AlertDialog open={open} onOpenChange={setopen}>
-            <AlertDialogContent>
+        <AlertDialog
+        open={open}
+        onOpenChange={(isOpen) => {
+            if (!isOpen) setopen(false);
+        }}
+    >            <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>
                         Are you sure?
@@ -20,9 +25,8 @@ export function Signout({
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel>
-                        Cancel
-                    </AlertDialogCancel>
+                <AlertDialogCancel onClick={() => setopen(true)}>Cancel</AlertDialogCancel>
+
                     <AlertDialogAction onClick={()=>{
                         signOut({
                             callbackUrl:"/",
