@@ -1,6 +1,6 @@
-import { Chatcard } from "@/components/chats/chatcard";
-import { CreateChat } from "@/components/chats/createchat";
-import { chatgroup, fetchRooms } from "@/components/chats/fetchrooms";
+import { Chatcard } from "@/components/room/chatcard";
+import { CreateChat } from "@/components/room/createchat";
+import { chatgroup, fetchRooms } from "@/components/room/fetchrooms";
 import Appbar from "@/components/dashboard/appbar"
 import { authoptions } from "@/lib/actions/auth"
 import { getServerSession } from "next-auth"
