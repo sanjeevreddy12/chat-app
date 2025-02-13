@@ -10,6 +10,7 @@ export default async function dashboard(){
     const session = await getServerSession(authoptions);
     const user= session?.user;
     console.log(user);
+    
     //@ts-ignore
     const token = user?.token ;
     const rooms = await fetchRooms(token);

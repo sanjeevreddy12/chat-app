@@ -12,119 +12,43 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Chat = exports.deletechat = exports.updatechat = exports.getchat = exports.getchats = void 0;
+exports.getUsers = getUsers;
+exports.CreateUser = CreateUser;
 const db_config_1 = __importDefault(require("../config/db.config"));
-const getchats = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        //@ts-ignore
-        const user = req.user;
-        const chats = yield db_config_1.default.chatGroups.findMany({
-            where: {
-                user_id: user.id
-            },
-            orderBy: {
-                created_at: "desc"
-            }
-        });
-        return res.status(200).json({
-            message: "Chats fetched successfully",
-            chats
-        });
-    }
-    catch (e) {
-        console.error(e);
-        return res.status(500).json({
-            message: "Something went wrong"
-        });
-    }
-});
-exports.getchats = getchats;
-const getchat = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        const chat = yield db_config_1.default.chatGroups.findUnique({
-            where: {
-                id: id
-            }
-        });
-        return res.status(200).json({
-            message: "Chat fetched successfully",
-            chat
-        });
-    }
-    catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            message: "Something went wrong when fetching "
-        });
-    }
-});
-exports.getchat = getchat;
-const updatechat = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        const body = req.body;
-        const updatedchat = yield db_config_1.default.chatGroups.update({
-            where: {
-                id: id
-            },
-            data: {
-                title: body.title,
-                password: body.password
-            }
-        });
-        return res.status(200).json({
-            message: "Chat updated successfully",
-            updatedchat
-        });
-    }
-    catch (error) {
-        return res.status(500).json({
-            message: "Something went wrong while updating "
-        });
-    }
-});
-exports.updatechat = updatechat;
-const deletechat = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        const deletedchat = yield db_config_1.default.chatGroups.delete({
-            where: {
-                id: id
-            }
-        });
-        return res.status(200).json({
-            message: "Chat deleted successfully",
-            deletedchat
-        });
-    }
-    catch (error) {
-        return res.status(500).json({
-            message: "Something went wrong while deleting "
-        });
-    }
-});
-exports.deletechat = deletechat;
-const Chat = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { title, password, user_id } = req.body;
-        const chat = yield db_config_1.default.chatGroups.create({
-            data: {
-                title,
-                password,
-                user_id: user_id
-            }
-        });
-        return res.status(200).json({
-            message: "Chat group created successfully",
-            chat
-        });
-    }
-    catch (e) {
-        console.error(e);
-        return res.status(500).json({
-            message: "Something went wrong"
-        });
-    }
-});
-exports.Chat = Chat;
+function getUsers(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { roomId } = req.query;
+            const users = yield db_config_1.default.groupUsers.findMany({
+                where: {
+                    group_id: roomId,
+                }
+            });
+            return res.json({
+                message: "Users Fetched Successfully", data: users
+            });
+        }
+        catch (e) {
+            return (res.json({
+                message: "Failed to fetch Users try again."
+            }));
+        }
+    });
+}
+function CreateUser(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const body = req.body;
+            const user = yield db_config_1.default.groupUsers.create({
+                data: body
+            });
+            console.log(user);
+            return res.json({
+                message: "User Created Successfully", data: { user: user }
+            });
+        }
+        catch (e) {
+            return res.json({ msg: "Try Again" });
+        }
+    });
+}

@@ -57,7 +57,7 @@ export const authoptions: AuthOptions = {
         const { data } = await axios.post("http://localhost:8000/api/auth/signin", payload);
         console.log("API response:", data);
 
-        user.id = data?.user?.id?.toString();
+        user.id = data?.user?.id.toString();
         user.token = data?.user?.token;
 
         return true;
@@ -71,25 +71,19 @@ export const authoptions: AuthOptions = {
     },
 
     async jwt({ token, user }) {
+      console.log("JWT Callback - User:", user);
       if (user) {
         token.user = user;
+        console.log("JWT Callback - User set:", user);
       }
       return token;
     },
 
-    async session({
-      session,
-      token,
-      user,
-    }: {
-      session: CustomSession;
-      token: JWT;
-      user: User;
-    }) {
-      console.log("token", token);
-     
+    async session({ session, token }: { session: CustomSession; token: JWT }) {
+      if (token.user) {
         session.user = token.user as CustomUser;
-      
+        console.log("Session Callback - User retrieved:", session.user);
+      }
       return session;
     },
   },

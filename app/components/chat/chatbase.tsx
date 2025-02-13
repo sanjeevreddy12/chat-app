@@ -1,37 +1,35 @@
 "use client"
 import { Getsocket } from "@/lib/socket"
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import {v4 as uuidV4} from "uuid"
 import { Button } from "../ui/button"
-export const Chatbase = ()=>{
-
-    let socket = useMemo(()=>{
-        const socket = Getsocket();
-        return socket.connect();
-
-
-    },[])
-
-    useEffect(()=>{
-        socket.on("message" , (data : any)=>{
-            console.log("The message is " , data)
-            
-        })
-        return ()=>{
-            socket.close()
-        }
-
-
-
-    },[])
-    const click = ()=>{
-        socket.emit("message" , {id:uuidV4()})
-    }
+import Appbar from "./Appbar"
+import { Sidebar } from "./Sidebar"
+import Enterroom from "./Enterroom"
+import Chats  from "./Chats"
+export const Chatbase = ({room,users,messages}:{room : any,users : any,messages : any})=>{
+    const [open, setOpen] = useState(true);
+    const [chatUser, setChatUser] = useState<any>();
+    useEffect(() => {
+      const data = localStorage.getItem(room.id);
+      if (data) {
+        const pData = JSON.parse(data);
+        setChatUser(pData);
+      }
+    }, [room.id]);
+    
+    
     return (
-        <div>
-            <Button onClick={click}>
-                send
-            </Button>
+        <div className=" flex no-scrollbar">
+            <Sidebar users={users}/>
+            <div className="w-full md:w-4/5 bg-gradient-to-b from-gray-50 to-white">
+        {open ? (
+          < Enterroom open={open} setOpen={setOpen} group={room} />
+        ) : (
+          <Appbar room={room} users={users} />
+        )}
+        <Chats group={room} oldMessages={messages} chatUser={chatUser}/>
+        </div>
         </div>
     )
 

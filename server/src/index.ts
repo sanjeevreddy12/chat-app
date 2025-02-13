@@ -5,16 +5,25 @@ import { createServer } from "http";
 import {Server} from "socket.io"
 import { connect } from "http2";
 import { CreateSocket } from "./socket/socket";
+import { instrument } from "@socket.io/admin-ui";
 
-
+import { createAdapter } from "@socket.io/redis-streams-adapter";
+import redis from "./config/redis.config";
 
 const app = express();
 const server  = createServer(app);
 const io = new Server(server,{
  cors : {
-  origin : "*"
- }
+  origin : ["https://admin.socket.io","http://localhost:3000"],
+  credentials:true
+ },
+ adapter : createAdapter(redis)
+
 });
+instrument(io,{
+  auth : false,
+  mode : "development"
+})
 
 io.on("connection" , (socket)=>{
   console.log("user connected" , socket.id);

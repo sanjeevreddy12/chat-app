@@ -16,6 +16,7 @@ const createChatSchema = z.object({
 });
 
 export const CreateChat = ({user}:{user:CustomUser}) => {
+    console.log(user.id);
     
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState("");
