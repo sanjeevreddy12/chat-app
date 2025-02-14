@@ -17,10 +17,10 @@ export default async function dashboard(){
     console.log(rooms);
 
     return (
-        <div>
-            <Appbar name = {session?.user?.name!} image={session?.user?.image!}/>
-            <CreateChat user={session?.user!} />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div  className="h-screen bg-amber-300">
+            <Appbar name = {session?.user?.name!} image={session?.user?.image!} user={session?.user!}/>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-amber-300 p-4">
                {rooms.map((room: chatgroup) => (
                   <Chatcard key={room.id} props={{ room, user : user! }} />
                ))}

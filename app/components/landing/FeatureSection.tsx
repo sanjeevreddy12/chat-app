@@ -15,7 +15,7 @@ export default function FeatureSection() {
       <Fcard
         icon="🔒"
         title="Secure"
-        description="Passcode protection for your private conversations."
+        description="Password protection for your private conversations."
       />
       <Fcard
         icon="💻"

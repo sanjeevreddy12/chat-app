@@ -9,7 +9,7 @@ export default function Appbar({room , users}:{room : any,users : any}){
                 <div className="md:hidden">
                     <Sidebar users={users}/>
                 </div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-600 text-transparent bg-clip-text">
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text">
           {room.title}
         </h1>
 

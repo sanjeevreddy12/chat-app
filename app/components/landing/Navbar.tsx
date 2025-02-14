@@ -10,7 +10,7 @@ interface NavbarProps {
 
 export const Navbar = ({ user }: NavbarProps) => {
     return(
-        <div className=" p-6 flex justify-between bg-white ">
+        <div className=" p-6 flex justify-between  ">
             <h1 className="text-xl md:text-2xl font-extrabold">
                 chat-app
             </h1>

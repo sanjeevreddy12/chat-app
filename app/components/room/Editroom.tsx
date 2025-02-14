@@ -22,7 +22,9 @@ export function Editroom({
 }) {
     const [deleteopen, setdeleteopen] = useState(false);
     const [editopen, seteditopen] = useState(false);
-
+    const handlecopylink = () => {
+        navigator.clipboard.writeText(`http://localhost:3000/chatroom/${room.id}`);
+    }
     return (
         <div className="flex items-center">
             <Suspense fallback={<div>Loading...</div>}>
@@ -48,6 +50,9 @@ export function Editroom({
                     <MoreVertical className="h-5 w-7 text-gray-500 hover:text-gray-700" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={handlecopylink}>
+                        Copy Link
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => seteditopen(true)}>
                         Edit
                     </DropdownMenuItem>

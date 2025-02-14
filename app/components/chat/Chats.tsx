@@ -63,7 +63,7 @@ export default function Chats({
               key={message.id}
               className={`max-w-sm rounded-lg p-2 ${
                 message.name === chatUser?.name
-                  ? "bg-gradient-to-r from-blue-400 to-blue-600  text-white self-end"
+                  ? "bg-gradient-to-r from-amber-200 to-amber-300  text-white self-end"
                   : "bg-gradient-to-r from-gray-200 to-gray-300 text-black self-start"
               }`}
             >
@@ -77,7 +77,7 @@ export default function Chats({
           type="text"
           placeholder="Type a message..."
           value={message}
-          className="flex-1 p-2 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 p-2 border rounded-lg outline-none focus:ring-2 focus:ring-amber-400"
           onChange={(e) => setMessage(e.target.value)}
         />
       </form>

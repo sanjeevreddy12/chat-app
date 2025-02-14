@@ -87,7 +87,7 @@ export const CreateChat = ({user}:{user:CustomUser}) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>Create Chat</Button>
+                <Button  className="bg-white text-black font-sans font-bold">Create Chat</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>

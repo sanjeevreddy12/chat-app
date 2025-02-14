@@ -1,31 +1,52 @@
+"use client"
 import Link from "next/link"
 import { Button } from "../ui/button"
 import { authoptions } from "@/lib/actions/auth";
 import { getServerSession } from "next-auth";
-import  Signin  from "../auth/Signin";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Input } from "../ui/input";
 
-export const HiSection=(async ()=>{
-    const session = await getServerSession(authoptions);
-    const user = session?.user;
+export const HiSection = () => {
+    const [link, setLink] = useState<string>("");
+    const router = useRouter();
 
-    
+    const handleJoinRoom = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!link) return;
+
+        // Extract room ID from the link if it's a full URL
+        const roomId = link.includes('/') ? link.split('/').pop() : link;
+        router.push(`/chatroom/${roomId}`);
+    };
+
     return(
-        <section className="flex-1 flex flex-col items-center justify-center  text-center p-12 bg-gradient-to-b from-gray-50 to-white">
-            <h1 className="text-5xl fonr-extrabold text-gray-900 mb-4">Chat with people </h1>
+        <section className="flex-1 flex flex-col items-center justify-center text-center p-12  ">
+            <h1 className="text-5xl font-extrabold text-gray-900 mb-4">Chat with people</h1>
             <p className="text-xl text-gray-600 mb-8">
                 Chat-app helps people to create secure chatlinks and start conversations in seconds 
             </p>
-            <Link href={user ? "/dashboard" : "api/auth/signin"}> 
-            {user ? (
-                <Button size={"lg"} className="animate-pulse">Continue Your Conversation </Button>
-            ) : (
-                <Button size={"lg"} className="animate-pulse">Start Your Conversation </Button>
-            )}
-            </Link>
-            <div className="mt-12 w-full max-w-5xl flex justify-center">
+            
+            <form onSubmit={handleJoinRoom} className="w-full max-w-md flex flex-col gap-4 mb-8">
+                <div className="flex gap-2">
+                    <Input
+                        type="text"
+                        placeholder="Paste your chat link or room ID here"
+                        value={link}
+                        onChange={(e) => setLink(e.target.value)}
+                        className="flex-1"
+                    />
+                    <Button type="submit" disabled={!link}>
+                        Join Room
+                    </Button>
+                </div>
+            </form>
 
-                <img src = "/images/photo.svg" alt = "Illustration" className="w-full h-auto"></img>
+           
+
+            <div className="mt-12 w-full max-w-5xl flex justify-center">
+                
             </div>
         </section>
     )
-})
+}

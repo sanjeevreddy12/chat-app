@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 
 import { toast } from "@/hooks/use-toast";
@@ -24,6 +24,7 @@ export default function ChatUserDialog({
   group: any;
 }) {
   const params = useParams();
+  const router = useRouter();
   const [state, setState] = useState({
     name: "",
     passcode: "",
@@ -67,8 +68,18 @@ export default function ChatUserDialog({
     }
   };
 
+  const handleOpenChange = (open: boolean) => {
+    setOpen(open);
+    if (!open) {
+      router.push('/');
+    }
+  };
+
   return (
-    <Dialog open={open}>
+    <Dialog 
+      open={open} 
+      onOpenChange={handleOpenChange}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Name and Passcode</DialogTitle>

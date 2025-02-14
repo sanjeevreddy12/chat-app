@@ -9,7 +9,7 @@ import { getServerSession } from "next-auth";
 export default async  function Home() {
   const session : CustomSession | null = await getServerSession(authoptions);
   return (
-    <div className="min-h-screen flex flex-col ">
+    <div className="min-h-screen flex flex-col no-scrollbar bg-amber-300">
       
       <Navbar user ={session?.user  ?? null} />
      <HiSection/>
